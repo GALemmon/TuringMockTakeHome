@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import '../ArticlesArea/ArticlesArea.css'
 import { Article } from '../Article/Article'
 
 export const ArticlesArea = ({ errorMessage, articles }) => {
@@ -17,7 +18,7 @@ export const ArticlesArea = ({ errorMessage, articles }) => {
   return (
     <>
       {errorMessage && <section>errorMessage</section>}
-      {!errorMessage && <div>{articleCards}</div>}
+      {!errorMessage && <div className="article-area" >{articleCards}</div>}
     </>
   )
 }
