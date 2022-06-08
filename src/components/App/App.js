@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route} from 'react-router-dom'
 import { fetchArticles } from '../../APICalls'
 import { NotFound } from '../NotFound/NotFound'
 import { mockData } from '../../mockData'
@@ -48,8 +48,8 @@ const App = () => {
         />
         <Route
           exact
-          path='/:id'
-          render={({ match }) => <ArticleDetail id={match.params.id} />}
+          path='/:title'
+          render={({ match }) => <ArticleDetail id={match.title} />}
         />
         <Route path='*' element={<NotFound />} />
       </Routes>
