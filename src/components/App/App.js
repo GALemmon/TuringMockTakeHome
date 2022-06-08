@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link } from 'react-router-dom'
 import { fetchArticles } from '../../APICalls'
+import { NotFound } from '../NotFound/NotFound'
 import { mockData } from '../../mockData'
 import { Header } from '../Header/Header'
 import { ArticlesArea } from '../ArticlesArea/ArticlesArea'
+import { ArticleDetail } from '../ArticleDetail/ArticleDetail'
 import { Footer } from '../Footer/Footer'
 
 const App = () => {
@@ -32,9 +34,25 @@ const App = () => {
 
   return (
     <>
-      <Header />
-      <ArticlesArea errorMessage={errorMessage} articles={articles} />
-      <Footer />
+      <Routes>
+        <Route
+          exact
+          path='/'
+          element={
+            <>
+              <Header />
+              <ArticlesArea errorMessage={errorMessage} articles={articles} />
+              <Footer />
+            </>
+          }
+        />
+        <Route
+          exact
+          path='/:id'
+          render={({ match }) => <ArticleDetail id={match.params.id} />}
+        />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
     </>
   )
 }
