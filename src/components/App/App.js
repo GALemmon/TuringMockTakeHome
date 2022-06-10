@@ -5,6 +5,7 @@ import { NotFound } from '../NotFound/NotFound'
 import { Header } from '../Header/Header'
 import { ArticlesArea } from '../ArticlesArea/ArticlesArea'
 import { ArticleDetail } from '../ArticleDetail/ArticleDetail'
+import '../App/App.css'
 
 const App = () => {
   const [articles, setArticles] = useState([])
