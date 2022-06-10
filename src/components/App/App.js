@@ -1,35 +1,36 @@
 import React, { useState, useEffect } from 'react'
-import { Routes, Route} from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { fetchArticles } from '../../APICalls'
 import { NotFound } from '../NotFound/NotFound'
-import { mockData } from '../../mockData'
 import { Header } from '../Header/Header'
 import { ArticlesArea } from '../ArticlesArea/ArticlesArea'
 import { ArticleDetail } from '../ArticleDetail/ArticleDetail'
-import { Footer } from '../Footer/Footer'
 
 const App = () => {
   const [articles, setArticles] = useState([])
+  const [currentArticle, setCurrentArticle] = useState(null)
   const [errorMessage, setErrorMessage] = useState('')
+  const [sortCriteria, setSortCriteria] = useState('date+')
 
   useEffect(() => {
     fetchCurrentArticles()
   }, [])
 
-  useEffect(() => {
-    console.log(articles)
-  }, [articles])
-
   const fetchCurrentArticles = () => {
-    setArticles(mockData.results)
-    // fetchArticles().then((res) => {
-    //   if (!res.ok) {
-    //     setErrorMessage('Oops, something went wrong.  Please try again later.')
-    //   } else {
-    //     let articleData = res.json()
-    //     return setArticles(articleData)
-    //   }
-    // })
+    fetchArticles()
+    .then((res) => {
+      if (!res.ok) {
+        setErrorMessage('Oops, something went wrong.  Please try again later.')
+      } else {
+        return res.json()
+      }
+    })
+    .then((data) => {
+      return data.results
+    })
+    .then((articlesData) => {
+      setArticles(articlesData)
+    })
   }
 
   return (
@@ -40,16 +41,29 @@ const App = () => {
           path='/'
           element={
             <>
-              <Header />
-              <ArticlesArea errorMessage={errorMessage} articles={articles} />
-              <Footer />
+              <Header
+                setSortCriteria={setSortCriteria}
+                sortCriteria={sortCriteria}
+                currentArticle={currentArticle}
+              />
+              {articles && !currentArticle && (
+                <ArticlesArea
+                  errorMessage={errorMessage}
+                  articles={articles}
+                  setCurrentArticle={setCurrentArticle}
+                  setSortCriteria={setSortCriteria}
+                  sortCriteria={sortCriteria}
+                />
+              )}
+              {currentArticle !== null && (
+                <ArticleDetail
+                  article={currentArticle}
+                  setCurrentArticle={setCurrentArticle}
+                />
+              )}
+              {!articles && !currentArticle && <h1>Loading articles.</h1>}
             </>
           }
-        />
-        <Route
-          exact
-          path='/:title'
-          render={({ match }) => <ArticleDetail id={match.title} />}
         />
         <Route path='*' element={<NotFound />} />
       </Routes>
