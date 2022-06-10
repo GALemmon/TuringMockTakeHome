@@ -51,6 +51,4 @@ I ran into issues with implementing dynamic urls in React Router for the detaile
 - HTML
 - CSS
 - JSX
-
-
-
+- Figma
